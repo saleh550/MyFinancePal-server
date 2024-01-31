@@ -15,6 +15,12 @@ const userSchema=mongoose.Schema({
         required:[true,'Please add your password']
 
     },
+    salary:{
+        type:Number,
+        required:[true,'Please add Salary'],
+        default:10000
+
+    },
     isAdmin:{
         type:Boolean,
         required:true,

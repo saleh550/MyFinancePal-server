@@ -13,6 +13,8 @@ connectDB()
 
 //Routes
 app.use('/api/users', require('./Routes/userRoutes'))
+app.use('/api/incomes', require('./Routes/incomeRoutes'))
+app.use('/api/expenses', require('./Routes/expenseRoutes'))
 
 // use the errorHandler function for manage error events 
 app.use(errorHandler)

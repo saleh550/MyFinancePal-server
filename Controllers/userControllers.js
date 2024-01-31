@@ -13,7 +13,7 @@ const generateToken = (id) => {
 //@route POST /api/users
 //@access public
 const registrUser = asyncHandler(async (req, res) => {
-  const { fullName, userName, password, comfortPassword } = req.body;
+  const { fullName, userName, password, comfortPassword ,salary } = req.body;
 
   if (password !== comfortPassword) {
     res.status(500);
@@ -35,6 +35,7 @@ const registrUser = asyncHandler(async (req, res) => {
     const user = await User.create({
       fullName,
       userName,
+      salary,
       password: hashPassword,
     });
     if (user) {
@@ -43,7 +44,7 @@ const registrUser = asyncHandler(async (req, res) => {
         _id: user._id,
         fullName: user.fullName,
         userName: user.userName,
-        password: user.password,
+        salary:user.salary,
         token: generateToken(user._id),
       });
     }
@@ -70,6 +71,7 @@ const loginUser = asyncHandler(async (req, res) => {
         fullName: user.fullName,
         isAdmin: user.isAdmin,
         userName: user.userName,
+        salary:user.salary,
         token: generateToken(user._id),
       });
     } else {
