@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../Models/usersModel");
 const Expense = require("../Models/expenseModel");
+const Income=require("../Models/incomesModel")
 
 //@desc add new income for a specific user by id
 //@route POST /api/incomes/add/income
@@ -121,8 +122,76 @@ const getExpensesByDate = asyncHandler(async (req, res) => {
   }
 });
 
+
+//@desc get all of expenses and incomes 
+//@route GET /api/expenses/and/incomes
+//@access private
+const getExpensesAndIncomes = asyncHandler(async (req, res) => {
+  const user = req.user;
+  try {
+    const expenses = await Expense.aggregate([
+      { $match: { userID: user._id } },
+      { $addFields: { color: "#ff2d55",type:"expense" } },
+      { $sort: { date: 1 } },
+      {
+        $project: {
+          _id:0,
+          name:1,
+          amount:1,
+          category:1,
+          color:1,
+          type:1,
+          date:{
+            $dateToString: {
+              format: "%d/%m/%Y",
+              date: "$date"
+            }
+          },
+        },
+      },
+    ]);
+    const incomes = await Income.aggregate([
+      { $match: { userID: user._id } },
+      { $addFields: { color: "#34B335",type:"income" } },
+      { $sort: { date: 1 } },
+      {
+        $project: {
+          _id:0,
+          name:1,
+          amount:1,
+          category:1,
+          color:1,
+          type:1,
+          date:{
+            $dateToString: {
+              format: "%d/%m/%Y",
+              date: "$date"
+            }
+          },
+        },
+      },
+    ]);
+
+    // Combine incomes and expenses into a single array
+const mergedArray = [...incomes, ...expenses];
+
+// Sort the merged array by date
+const sortedArray = mergedArray.sort((a, b) => {
+  const dateA = new Date(a.date.split('/').reverse().join('/'));
+  const dateB = new Date(b.date.split('/').reverse().join('/'));
+    return dateA - dateB;
+});
+
+
+    res.json(sortedArray );
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
 module.exports = {
   addExpense,
   getExpensesData,
   getExpensesByDate,
+  getExpensesAndIncomes
 };
