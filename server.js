@@ -11,7 +11,7 @@ app.use(express.urlencoded({extended: true}))
 
 connectDB()
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "https://65be266999ee797ffe7e996c--jade-frangipane-0df171.netlify.app/");
+    res.header("Access-Control-Allow-Origin", "https://65be266999ee797ffe7e996c--jade-frangipane-0df171.netlify.app");
     // Add other necessary headers here
     // Set the allowed headers, including 'Content-Type'
     res.header("Access-Control-Allow-Headers", "Content-Type");
