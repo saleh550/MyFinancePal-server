@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: true}))
 
 connectDB()
 app.use(cors({
-    origin: 'https://jade-frangipane-0df171.netlify.app/',
+    origin: 'https://jade-frangipane-0df171.netlify.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   }));
